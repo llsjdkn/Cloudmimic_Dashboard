@@ -1,0 +1,190 @@
+<html>
+{% load staticfiles%}
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>nitai</title>
+<style>
+body { margin:0; padding:0; background:#f1f1f1; font:70% Arial, Helvetica, sans-serif; color:#555; line-height:150%; text-align:left; }
+h1 { font-size:150%; margin:0 20px; line-height:80px; }
+button { margin:0 20px; line-height:30px}
+#container { margin:0 auto; width:1500px; background:#fff; padding-bottom:20px; }
+#mytb { margin:0 20px; }
+#pic { margin:0 20px; }
+table, td{
+	font:100% Arial, Helvetica, sans-serif;
+}
+table{width:100%;border-collapse:collapse;align:center;margin:1em 0;}
+th, td{text-align:center;width:25%;padding:.5em;border:1px solid #fff;}
+th{background:#328aa4  repeat-x;color:#fff;}
+td{background:#e5f1f4;}
+</style>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script type="text/javascript">
+     $(document).ready(function(){
+        $("#hide").click(function(){
+        $("#pic").hide();
+        });
+        $("#show").click(function(){
+        $("#pic").show();
+        });
+
+        var can1,can2,can3,mid1,mid2,mid3;
+        var ctx1,ctx2,ctx3,ctx4,ctx5,ctx6;//456用于划线+标志ip和服务器
+        var w1,h1,w2,h2,w3,h3,w4,h4,w5,h5,w6,h6;
+        var serverPic = new Image();
+        var vmPic = new Image();
+        var x1_,x2_,x3_;//代表三个服务器的横坐标
+         var margin,x1,x2,x3;//代表三个服务器的横坐标+图片宽
+        var  bling_flag=new Boolean;
+        x1_=200;
+        x2_=600;
+        x3_=1000;
+        margin=20;
+        x1=x1_+90;
+        x2=x2_+90;
+        x3=x3_+90;
+        function init(){
+            can1  = document.getElementById("canvas1");
+            ctx1 = can1.getContext("2d");
+            can2  = document.getElementById("canvas2");
+            ctx2 = can2.getContext("2d");
+            can3  = document.getElementById("canvas3");
+            ctx3 = can3.getContext("2d");
+            w1 = can1.width;
+            h1 = can1.height;
+            w2 = can2.width;
+            h2 = can2.height;
+            w3 = can3.width;
+            h3 = can3.height;
+            serverPic.src = "/static/5.png";
+            vmPic.src = "/static/7.png";
+            mid1  = document.getElementById("middle1");
+            ctx4 = mid1.getContext("2d");
+            mid2  = document.getElementById("middle2");
+            ctx5 = mid2.getContext("2d");
+            mid3  = document.getElementById("middle3");
+            ctx6 = mid3.getContext("2d");
+            w4 = mid1.width;
+            h4 = mid1.height;
+            w5 = mid2.width;
+            h5 = mid2.height;
+            w6 = mid3.width;
+            h6 = mid3.height;
+        }
+
+        function drawBackground(){
+            ctx1.fillStyle ="#e5f1f4";
+            ctx1.fillRect(0,0,w1,h1);
+            ctx2.fillStyle ="#e5f1f4";
+            ctx2.fillRect(0,0,w2,h2);
+            ctx3.fillStyle ="#e5f1f4";
+            ctx3.fillRect(0,0,w3,h3);
+            ctx4.fillStyle ="#e5f1f4";
+            ctx4.fillRect(0,0,w4,h4);
+            ctx5.fillStyle ="#e5f1f4";
+            ctx5.fillRect(0,0,w5,h5);
+            ctx6.fillStyle ="#e5f1f4";
+            ctx6.fillRect(0,0,w6,h6);
+        }
+
+        function drawBackground_() {
+            ctx5.fillStyle = "#e5f1f4";
+            ctx5.fillRect(0, 0, w5, h5);
+            ctx6.fillStyle = "#e5f1f4";
+            ctx6.fillRect(0, 0, w6, h6);
+        }
+        function drawProxy(){
+            ctx1.drawImage(vmPic,x2_,10);
+        }
+
+        function drawExecutor(){
+            //drawImage(img,x,y,width,height)
+            ctx2.drawImage(vmPic,x1_,0);
+            ctx2.drawImage(vmPic,x2_,0);
+            ctx2.drawImage(vmPic,x3_,0);
+        }
+
+        function drawServer(){
+            //drawImage(img,x,y,width,height)
+            ctx3.drawImage(serverPic,x1_,0);
+            ctx3.drawImage(serverPic,x2_,0);
+            ctx3.drawImage(serverPic,x3_,0);
+        }
+
+        function drawline(ctx,startx,starty,endx,endy,color){
+            ctx.beginPath();
+            ctx.lineWidth = 5;
+            ctx.setLineDash([5]);
+            ctx.strokeStyle = color;
+            ctx.moveTo(startx, starty);
+            ctx.lineTo(endx, endy);
+            ctx.stroke();
+        }
+
+        function text(ctx,content,startx,starty,align,color){
+            ctx.font = 'bold 35px Arial';
+            ctx.textAlign = align;
+            ctx.textBaseline = 'bottom';
+            ctx.fillStyle = color;
+            ctx.fillText(content, startx, starty); 
+        }
+
+        init();
+        drawBackground();
+        drawServer();
+        drawProxy();
+        drawExecutor();
+        drawline(ctx4,x2,0,x1,h3,'#df1111');
+        drawline(ctx4,x2,0,x2,h3,'#555');
+        drawline(ctx4,x2,0,x3,h3,'#595959');
+        bling_flag=0;
+        console.log('{{ name }}');//调试用
+
+        function refresh(){
+            $.ajax({                    //调用ajax
+                type: "get",
+                url:'/view/mtdrefresh/' +'{{ name }}' + '/',  //发出请求的地址,避免硬编码，使用名为list的url
+                dataType: "json",
+                success:function(data) {
+                    let a;
+                    a = $.parseJSON(data);
+                   // console.log(a[0].ip)
+                    ctx1.clearRect(0,0,w1,100);
+                    text(ctx5,a[0].P_extern,x2_,0,'middle','#555');
+                    ctx5.clearRect(0,0,w5,h5);
+                    ctx5.fillStyle = "#e5f1f4";
+                    ctx5.fillRect(0, 0, w5, h5);
+                    text(ctx5,a[0].E1_ip,x1,50,'middle','#555');
+                    text(ctx5,a[1].E1_ip,x2,50,'middle','#555');
+                    text(ctx5,a[2].E1_ip,x3,50,'middle','#555');
+                    ctx6.clearRect(0,0,w6,h6);
+                    ctx6.fillStyle = "#e5f1f4";
+                    ctx6.fillRect(0, 0, w6, h6);
+                    text(ctx6,a[0].E1_loca,x1,50,'middle','#555');
+                    text(ctx6,a[1].E1_loca,x2,50,'middle','#555');
+                    text(ctx6,a[2].E1_loca,x3,50,'middle','#555');
+
+                }
+            });
+        }
+        refresh();
+        setInterval(refresh, 1000);
+     });
+</script>
+</head>
+<body>
+<div id="container">
+    <button id="hide" type="button">隐藏</button>
+    <button id="show" type="button">显示</button>
+    <div id="pic">
+        <canvas id="canvas1" width = "1460" height="177"></canvas>
+        <canvas id="middle1" width = "1460" height="400"></canvas>
+        <canvas id="canvas2" width = "1460" height="167"></canvas>
+        <canvas id="middle2" width = "1460" height="100"></canvas>
+        <canvas id="canvas3" width = "1460" height="214"></canvas>
+        <canvas id="middle3" width = "1460" height="100"></canvas>
+    </div>
+</div>
+
+</body>
+</html>

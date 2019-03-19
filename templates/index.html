@@ -1,0 +1,42 @@
+<html>
+{% load staticfiles%}
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>列表</title>
+<link type="text/ccs" href="{% static 'tablecloth/tablecloth.ccs' %}" rel="stylesheet" media="screen" />
+<script type="text/javascript" src="{% static 'tablecloth/tablecloth.js' %}"></script>
+<style>
+body { margin:0; padding:0; background:#f1f1f1; font:70% Arial, Helvetica, sans-serif; color:#555; line-height:150%; text-align:left; }
+h1 { font-size:150%; margin:0 20px; line-height:80px; }
+#container { margin:0 auto; width:1000px; background:#fff; padding-bottom:20px; }
+#content { margin:0 20px; }
+form { margin:1em 0; padding:.2em 20px; color:#057fac;background:#eee; }
+</style>
+</head>
+<body>
+<div id="container">
+  <h1>列表</h1>
+  <div id="content">
+    <table  cellspacing="0" cellpadding="0">
+        <tr>
+        <th>id</th>
+        <th>name</th>
+        <th>district </th>
+        <th>population</th>
+        </tr>
+
+        {% for city in citylist %}
+        <tr>
+        <th>{{ city.id }}</th>
+        <th>{{ city.name }}</th>
+        <th>{{ city.district }}</th>
+        <th>{{ city.population }}</th>
+        </tr>
+        {% endfor %}
+    </table>
+
+  </div>
+</div>
+
+</body>
+</html>

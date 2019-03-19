@@ -1,0 +1,613 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<title></title>
+  <style>
+
+
+    button{
+
+
+        position:absolute;
+        margin-left: 50px;
+        margin-top: 50px;
+        width: 100px;
+        height: 30px;
+
+
+    }
+    #reset{
+       margin-top: 100px;
+    }
+
+
+  </style>
+</head>
+<body style="margin:0;padding:0">
+
+
+<canvas id="canvas" width="600" height="600" style="background-color: #ccc"></canvas>
+<button value="return" id="ret">悔棋</button>
+
+
+<button value="return" id="reset">重置</button>
+<!-- <script type="text/javascript" src="jquery-2.1.1.min.js"></script> -->
+<script type="text/javascript">
+   
+  (function(window) {
+      
+      var cxt = document.getElementById("canvas").getContext("2d");
+      var x = 100,
+          y = 100,
+          width = 300,
+          height = 300;
+
+
+      var colum = 30;
+      var color = "#000";
+      var circle = 7;
+      var data = [];
+
+
+      var dataX = [], dataY = [];
+
+
+
+
+      
+      
+       function drawLine(cxt, x, y, x1, y1, stokeColor){
+         var color;
+         var sc;
+         var temp;
+         if(stokeColor == undefined)color = "#000";
+         else color =  stokeColor
+         temp = cxt.strokeStyle;
+         cxt.strokeStyle = color;
+         cxt.beginPath();
+         cxt.moveTo(x,y);
+         cxt.lineTo(x1,y1);
+         cxt.stroke();
+         cxt.strokeStyle = temp;
+      }
+
+
+      function drawCircle(cxt, x, y, r, color){
+
+
+        if(color==undefined){
+           cxt.strokeStyle = "#000";
+        }else {
+           cxt.fillStyle = color;
+
+
+        }
+        cxt.beginPath();
+        cxt.arc(x,y,r,0,Math.PI*2);
+        cxt.fill();
+      }
+
+
+      function putData(i,j){
+          if(color == "#000"){
+              data[i][j] = 1;
+          }else{
+            data[i][j] = 2;
+          }
+      }
+
+
+     
+
+
+
+
+      function init(){
+
+
+          data = [];
+          for(var i=0; i<height/colum+1; i++){
+             data.push(new Array(width/colum+1));
+          }
+
+
+          for(var i=0; i<data.length; i++){
+            for(var j=0; j<data.length; j++){
+               data[i][j] = 0;
+            }
+          }
+
+
+          cxt.rect(x,y,width,height);
+          cxt.stroke();
+
+
+          for(var i=1; i<10;i++){
+              drawLine(cxt, x+i*colum, y, x+i*colum, y+height);
+              drawLine(cxt, x, y+i*colum, x+width, y+i*colum);
+          }
+          color = "#FFF";
+      }
+     
+      function validateReset(cxt){
+
+
+          var width1  = document.getElementById("canvas").width;
+          var height1 = document.getElementById("canvas").height;
+          cxt.clearRect(0,0,width1,height1);
+          init();
+
+
+
+
+      }
+
+
+      function ret(){
+
+
+          var width1  = document.getElementById("canvas").width;
+          var height1 = document.getElementById("canvas").height;
+          cxt.clearRect(0,0,width1,height1);
+
+
+          cxt.rect(x,y,width,height);
+          cxt.stroke();
+
+
+          for(var i=1; i<10;i++){
+              drawLine(cxt, x+i*colum, y, x+i*colum, y+height);
+              drawLine(cxt, x, y+i*colum, x+width, y+i*colum);
+          }
+
+
+          cxt.clearRect(0,0,width1,height1);
+
+
+          cxt.rect(x,y,width,height);
+          cxt.stroke();
+
+
+          for(var i=1; i<10;i++){
+              drawLine(cxt, x+i*colum, y, x+i*colum, y+height);
+              drawLine(cxt, x, y+i*colum, x+width, y+i*colum);
+          }
+
+
+          if(color=="#FFF")
+             color = "#000";
+           else color = "#FFF";
+
+
+           var tempX = dataX.pop();
+           var tempY = dataY.pop();
+
+
+           data[tempX][tempY] = 0;
+
+
+
+
+          for(var i=0; i<data.length-1; i++){
+            for(var j=0; j<data.length-1; j++){
+
+
+               if(data[i][j]==1)
+                  drawCircle(cxt, x+colum*i, y+colum*j, circle, "#000");
+               else if(data[i][j]==2){
+                  drawCircle(cxt, x+colum*i, y+colum*j, circle, "#FFF"); 
+               }
+               
+            }
+          }
+      }
+
+
+
+
+
+
+      function isWin(data){
+
+
+
+
+          for(var i=0;i<data.length;i++){
+            for(var j=0;j<data[i].length-4;j++){
+              if((data[i][j]==1 && data[i][j+1]==1 && data[i][j+2]==1 && data[i][j+3]==1 && data[i][j+4]==1) ||
+                (data[i][j]==2 && data[i][j+1]==2 && data[i][j+2]==2 && data[i][j+3]==2 && data[i][j+4]==2) 
+                ){
+                      
+                      drawLine(cxt, x+colum*i, y+colum*j, x+colum*i, y+colum*j+colum, "#f00");
+                      drawLine(cxt, x+colum*i, y+colum*j+colum, x+colum*i, y+colum*j+colum*2, "#f00");
+                      drawLine(cxt, x+colum*i, y+colum*j+colum*2, x+colum*i, y+colum*j+colum*3, "#f00");
+                      drawLine(cxt, x+colum*i, y+colum*j+colum*3, x+colum*i, y+colum*j+colum*4, "#f00");
+
+
+                      if(data[i][j]==1){
+                        return {
+                          statu: true,
+                          whowin: "Black"
+                        }
+                      }else if(data[i][j]==2){
+                          return {
+                           statu: true,
+                           whowin: "White"
+                        }
+                      }
+
+
+                      
+              }
+
+
+
+
+            }
+          } 
+
+
+          for(var i=0;i<data.length;i++){
+            for(var j=0;j<data[i].length-4;j++){
+              if((data[j][i]==1 && data[j+1][i]==1 && data[j+2][i]==1 && data[j+3][i]==1 && data[j+4][i]==1) ||
+               (data[j][i]==2 && data[j+1][i]==2 && data[j+2][i]==2 && data[j+3][i]==2 && data[j+4][i]==2) 
+                ){
+                      
+
+
+                      drawLine(cxt, x+colum*j, y+colum*i, x+colum*j+colum, y+colum*i, "#f00");
+                      drawLine(cxt, x+colum*j+colum, y+colum*i, x+colum*j+colum*2, y+colum*i, "#f00");
+                      drawLine(cxt, x+colum*j+colum*2, y+colum*i, x+colum*j+colum*3, y+colum*i, "#f00");
+                      drawLine(cxt, x+colum*j+colum*3, y+colum*i, x+colum*j+colum*4, y+colum*i, "#f00");
+
+
+                     if(data[j][i]==1){
+                        return {
+                          statu: true,
+                          whowin: "Black"
+                        }
+                      }else if(data[j][i]==2){
+                          return {
+                           statu: true,
+                           whowin: "White"
+                        }
+                      }
+              }
+
+
+
+
+            }
+          } 
+
+
+
+
+
+
+          for(var i=4;i<data.length;i++){
+            for(var j=0;j<i+3;j++){
+                  if(
+
+
+                    (data[i][j]==1 && data[i-1][j+1]==1 && data[i-2][j+2]==1 && data[i-3][j+3]==1 && 
+                    data[i-4][j+4]==1) 
+                    || 
+                    (data[i][j]==2 && data[i-1][j+1]==2 && data[i-2][j+2]==2 && 
+                    data[i-3][j+3]==2 && data[i-4][j+4]==2) 
+
+
+                    ){
+
+
+                      drawLine(cxt, y+colum*i, x+colum*j, y+colum*i-colum, x+colum*j+colum, "#f00");
+                      drawLine(cxt, y+colum*i-colum, x+colum*j+colum, y+colum*i-colum*2, x+colum*j+colum*2, 
+                        "#f00");
+                      drawLine(cxt, y+colum*i-colum*2, x+colum*j+colum*2, y+colum*i-colum*3, 
+                        x+colum*j+colum*3, "#f00");
+                      drawLine(cxt, y+colum*i-colum*3, x+colum*j+colum*3, y+colum*i-colum*4, 
+                        x+colum*j+colum*4, "#f00");
+
+
+                      if(data[i][j]==1){
+                        return {
+                          statu: true,
+                          whowin: "Black"
+                        }
+                      }else if(data[i][j]==2){
+                          return {
+                           statu: true,
+                           whowin: "White"
+                        }
+                      }
+
+
+
+
+
+
+                  }
+            }
+          }
+
+
+
+
+
+
+          for(var i=0;i<data.length-4;i++){
+            for(var j=0;j<data.length-4;j++){
+                  if(
+
+
+                    (data[i][j]==1 && data[i+1][j+1]==1 && data[i+2][j+2]==1 && data[i+3][j+3]==1 && 
+                    data[i+4][j+4]==1) 
+                    || 
+                    (data[i][j]==2 && data[i+1][j+1]==2 && data[i+2][j+2]==2 && 
+                    data[i+3][j+3]==2 && data[i+4][j+4]==2) 
+
+
+                    ){
+
+
+                      drawLine(cxt, y+colum*i, x+colum*j, y+colum*i+colum, x+colum*j+colum, "#f00");
+                      drawLine(cxt, y+colum*i+colum, x+colum*j+colum, y+colum*i+colum*2, x+colum*j+colum*2, 
+                        "#f00");
+                      drawLine(cxt, y+colum*i+colum*2, x+colum*j+colum*2, y+colum*i+colum*3, 
+                        x+colum*j+colum*3, "#f00");
+                      drawLine(cxt, y+colum*i+colum*3, x+colum*j+colum*3, y+colum*i+colum*4, 
+                        x+colum*j+colum*4, "#f00");
+
+
+                      if(data[i][j]==1){
+                        return {
+                          statu: true,
+                          whowin: "Black"
+                        }
+                      }else if(data[i][j]==2){
+                          return {
+                           statu: true,
+                           whowin: "White"
+                        }
+                      }
+
+
+
+
+
+
+                  }
+            }
+          }
+
+
+
+
+
+
+
+
+          return {
+            statu:false
+          }
+
+
+
+
+
+
+
+
+
+
+
+
+      }
+
+
+
+
+      document.getElementById("reset").onclick = function(e){
+          validateReset(cxt);
+          validateReset(cxt);//只调用一次会绘制一个圆形，具体原因不知道,这里调用两次可以解决
+      }
+
+
+      document.getElementById("ret").onclick = function(e){
+          ret();
+      }
+
+
+
+
+      
+
+
+      function getMouseClick(){
+    
+         window.onclick = function(e){
+
+
+            if(x<=e.clientX && e.clientX<=x+width && y<= e.clientY && e.clientY <= y+height){
+              
+
+
+               if(color == "#000"){
+                  color = "#FFF";
+               }else if(color == "#FFF"){
+                  color = "#000";
+               }
+
+
+                var vx = e.clientX;
+                var vy = e.clientY; 
+
+
+                var tx = Math.floor((vx - x)/colum);
+                var ty = Math.floor((vy - y)/colum);
+
+
+                var a =  x + colum*tx;
+                var b =  y + colum*ty;
+
+
+                var px1 = a;
+                var py1 = b;
+
+
+                var px2 = a+colum;
+                var py2 = b;
+
+
+                var px3 = a;
+                var py3 = b+colum;
+
+
+                var px4 = a+colum;
+                var py4 = b+colum;
+
+
+                var y1 = (vx-px1)*(vx-px1)+(vy-py1)*(vy-py1);
+                var y2 = (vx-px2)*(vx-px2)+(vy-py2)*(vy-py2);
+                var y3 = (vx-px3)*(vx-px3)+(vy-py3)*(vy-py3);
+                var y4 = (vx-px4)*(vx-px4)+(vy-py4)*(vy-py4);
+
+
+                var min = Math.min(y1,y2,y3,y4);
+
+
+                if(min==y1){
+
+
+                  if(!data[tx][ty]){
+                     drawCircle(cxt, px1, py1, circle, color);
+                     putData(tx,ty);
+                     dataX.push(tx);
+                     dataY.push(ty);
+                     var temp = isWin(data); 
+                     if(temp.statu){
+                        
+                        setTimeout(function(){
+                          alert(temp.whowin+" Win!");
+                            validateReset(cxt)
+                            validateReset(cxt)
+                        },200)
+                       
+                     }
+                  }
+                   
+                }else if(min==y2){
+
+
+                   if(!data[tx+1][ty]){
+                     drawCircle(cxt, px2, py2, circle, color);
+                     putData(tx+1,ty);
+
+
+                     dataX.push(tx+1);
+                     dataY.push(ty);
+                     var temp = isWin(data);
+                      if(temp.statu){
+                        
+                        setTimeout(function(){
+                          alert(temp.whowin+" Win!");
+                            validateReset(cxt)
+                            validateReset(cxt)
+                        },200)
+                        
+                     }
+
+
+                   
+                  }
+
+
+
+
+                }else if(min==y3){
+
+
+                   if(!data[tx][ty+1]){
+                     drawCircle(cxt, px3, py3, circle, color);
+                     putData(tx,ty+1);
+                     dataX.push(tx);
+                     dataY.push(ty+1);
+                      var temp = isWin(data);
+                      if(temp.statu){
+                       
+                        setTimeout(function(){
+                           alert(temp.whowin+" Win!");
+                            validateReset(cxt)
+                            validateReset(cxt)
+                        },200)
+                        
+                     }
+                     
+                  }
+
+
+
+
+                }else if(min==y4){
+
+
+                   if(!data[tx+1][ty+1]){
+                     drawCircle(cxt, px4, py4, circle, color);
+                     putData(tx+1,ty+1);
+                     dataX.push(tx+1);
+                     dataY.push(ty+1);
+                     var temp = isWin(data);
+                      if(temp.statu){
+                        
+                        setTimeout(function(){
+                          alert(temp.whowin+" Win!");
+                            validateReset(cxt)
+                            validateReset(cxt)
+                        },200)
+                        
+                     }
+                  }
+
+
+
+
+                }
+
+
+
+
+                  
+            }
+            
+
+
+         }//on click end
+      }//函数结束
+
+
+
+
+      init();
+      getMouseClick();
+
+
+
+
+  })(window)
+
+
+ </script>
+
+
+<!-- <script type="text/javascript" src="vue.min.js"></script> -->
+<script>
+  
+
+
+
+
+
+
+</script>
+</body>
+</html>
