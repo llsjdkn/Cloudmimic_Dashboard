@@ -32,7 +32,7 @@ def mimic_list_refresh(request):
 	     })  # 后续对接数据库修改
     print(data)
     json_data = json.dumps(data,cls = ComplexEncoder)    #json格式加双引号
-    #print(json_data)mtd_list.html
+    #print(json_data)mtd_list_error.html
     return JsonResponse(json_data,safe=False)
 
 

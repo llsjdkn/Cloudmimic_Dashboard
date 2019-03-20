@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Deployment</title>
+            <style>
+            body { margin:0; padding:0; background:#f1f1f1; font:70% Arial, Helvetica, sans-serif; color:#555; line-height:150%; text-align:left; }
+            h1 { font-size:150%; margin:0 20px; line-height:80px; }
+            button { margin:0 20px; line-height:30px}
+            #container { margin:0 auto; width:1500px; background:#fff; padding-bottom:20px; }
+            #mytb { margin:0 20px; }
+            #pic { margin:0 20px; }
+            table, td{
+                font:100% Arial, Helvetica, sans-serif;
+            }
+            table{width:100%;border-collapse:collapse;align:center;margin:1em 0;}
+            th, td{text-align:center;width:25%;padding:.5em;border:1px solid #fff;}
+            th{background:#328aa4  repeat-x;color:#fff;}
+            td{background:#e5f1f4;}
+
+            #header {
+                background-color:black;
+                color:white;
+                text-align:center;
+                padding:5px;
+            }
+            #nav {
+                line-height:30px;
+                background-color:#eeeeee;
+                height:700px;
+                width:350px;
+                float:left;
+                padding:10px;
+            }
+            #section {
+
+                width:350px;
+                float:left;
+                padding:10px;
+            }
+            #footer {
+                background-color:black;
+                color:white;
+                clear:both;
+                text-align:center;
+                padding:5px;
+            }
+        </style>
+</head>
+<body>
+    <form method='post'>
+    {% csrf_token %}
+        <div id="header">
+        <h1>Mimic Cloud Dashboard</h1>
+        </div>
+
+        <div id="nav">
+        Virtual Machine Deployment<br>
+        Moving Target Defense<br>
+        Mimic Encapsulation<br>
+        </div>
+
+        <div id="section">
+        <h2>Virtual Machine Deployment</h2>
+        <p>
+        Please select the flavors of VM as you want.
+        </p>
+        <p>
+
+            类型<br><td>{{ form.os }}</td><br>
+            参数<br><td>{{ form.flavor }}</td><br>
+            部署位置<br><td>{{ form.location }}</td><br>
+            数量<br><td>{{ form.number }}</td><br><br>
+            <input type="submit" value="Submit">
+
+
+        </p>
+        </div>
+
+        <div id="footer">
+        Copyright ndsc_ztb
+        </div>
+
+
+    </form>
+</body>
+</html>

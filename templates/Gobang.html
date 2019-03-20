@@ -2,61 +2,46 @@
 <html>
 <head>
 <title></title>
-  <style>
-
+  <style>     <!-- 定义一种名为button的格式-->
 
     button{
-
-
-        position:absolute;
-        margin-left: 50px;
-        margin-top: 50px;
-        width: 100px;
-        height: 30px;
-
-
-    }
-    #reset{
-       margin-top: 100px;
-    }
-
+    position:absolute;
+    margin-left: 50px;
+    margin-top: 50px;
+    width: 100px;
+    height: 30px;
+    }
+    #reset
+    {
+    margin-top: 100px;
+    }
 
   </style>
 </head>
 <body style="margin:0;padding:0">
 
+<canvas id="canvas" width="600" height="600" style="background-color: #ccc"></canvas>    <!-- canvas是图形容器-->
 
-<canvas id="canvas" width="600" height="600" style="background-color: #ccc"></canvas>
 <button value="return" id="ret">悔棋</button>
-
-
 <button value="return" id="reset">重置</button>
-<!-- <script type="text/javascript" src="jquery-2.1.1.min.js"></script> -->
-<script type="text/javascript">
+<script type="text/javascript" src="jquery-2.1.1.min.js"></script>
+<script type="text/javascript">      <!--  在 HTML 页面中插入一段 JavaScript -->
    
   (function(window) {
       
       var cxt = document.getElementById("canvas").getContext("2d");
       var x = 100,
-          y = 100,
-          width = 300,
-          height = 300;
-
+         y = 100,
+         width = 300,
+         height = 300;
 
       var colum = 30;
       var color = "#000";
       var circle = 7;
       var data = [];
-
-
       var dataX = [], dataY = [];
-
-
-
-
-      
-      
-       function drawLine(cxt, x, y, x1, y1, stokeColor){
+     
+      function drawLine(cxt, x, y, x1, y1, stokeColor){
          var color;
          var sc;
          var temp;
@@ -74,19 +59,15 @@
 
       function drawCircle(cxt, x, y, r, color){
 
-
         if(color==undefined){
            cxt.strokeStyle = "#000";
         }else {
            cxt.fillStyle = color;
-
-
         }
         cxt.beginPath();
         cxt.arc(x,y,r,0,Math.PI*2);
         cxt.fill();
       }
-
 
       function putData(i,j){
           if(color == "#000"){
@@ -96,20 +77,11 @@
           }
       }
 
-
-     
-
-
-
-
       function init(){
-
-
           data = [];
           for(var i=0; i<height/colum+1; i++){
              data.push(new Array(width/colum+1));
           }
-
 
           for(var i=0; i<data.length; i++){
             for(var j=0; j<data.length; j++){
@@ -117,10 +89,8 @@
             }
           }
 
-
           cxt.rect(x,y,width,height);
           cxt.stroke();
-
 
           for(var i=1; i<10;i++){
               drawLine(cxt, x+i*colum, y, x+i*colum, y+height);
@@ -131,20 +101,14 @@
      
       function validateReset(cxt){
 
-
           var width1  = document.getElementById("canvas").width;
           var height1 = document.getElementById("canvas").height;
           cxt.clearRect(0,0,width1,height1);
           init();
 
-
-
-
       }
 
-
       function ret(){
-
 
           var width1  = document.getElementById("canvas").width;
           var height1 = document.getElementById("canvas").height;
@@ -153,20 +117,15 @@
 
           cxt.rect(x,y,width,height);
           cxt.stroke();
-
 
           for(var i=1; i<10;i++){
               drawLine(cxt, x+i*colum, y, x+i*colum, y+height);
               drawLine(cxt, x, y+i*colum, x+width, y+i*colum);
           }
 
-
           cxt.clearRect(0,0,width1,height1);
-
-
           cxt.rect(x,y,width,height);
           cxt.stroke();
-
 
           for(var i=1; i<10;i++){
               drawLine(cxt, x+i*colum, y, x+i*colum, y+height);
@@ -182,11 +141,7 @@
            var tempX = dataX.pop();
            var tempY = dataY.pop();
 
-
            data[tempX][tempY] = 0;
-
-
-
 
           for(var i=0; i<data.length-1; i++){
             for(var j=0; j<data.length-1; j++){
@@ -204,13 +159,7 @@
 
 
 
-
-
-
       function isWin(data){
-
-
-
 
           for(var i=0;i<data.length;i++){
             for(var j=0;j<data[i].length-4;j++){
@@ -234,15 +183,8 @@
                            statu: true,
                            whowin: "White"
                         }
-                      }
-
-
-                      
+                      }          
               }
-
-
-
-
             }
           } 
 
@@ -253,7 +195,6 @@
                (data[j][i]==2 && data[j+1][i]==2 && data[j+2][i]==2 && data[j+3][i]==2 && data[j+4][i]==2) 
                 ){
                       
-
 
                       drawLine(cxt, x+colum*j, y+colum*i, x+colum*j+colum, y+colum*i, "#f00");
                       drawLine(cxt, x+colum*j+colum, y+colum*i, x+colum*j+colum*2, y+colum*i, "#f00");
@@ -273,29 +214,19 @@
                         }
                       }
               }
-
-
-
-
             }
           } 
-
-
-
 
 
 
           for(var i=4;i<data.length;i++){
             for(var j=0;j<i+3;j++){
                   if(
-
-
                     (data[i][j]==1 && data[i-1][j+1]==1 && data[i-2][j+2]==1 && data[i-3][j+3]==1 && 
                     data[i-4][j+4]==1) 
                     || 
                     (data[i][j]==2 && data[i-1][j+1]==2 && data[i-2][j+2]==2 && 
                     data[i-3][j+3]==2 && data[i-4][j+4]==2) 
-
 
                     ){
 
@@ -308,7 +239,6 @@
                       drawLine(cxt, y+colum*i-colum*3, x+colum*j+colum*3, y+colum*i-colum*4, 
                         x+colum*j+colum*4, "#f00");
 
-
                       if(data[i][j]==1){
                         return {
                           statu: true,
@@ -320,35 +250,19 @@
                            whowin: "White"
                         }
                       }
-
-
-
-
-
-
                   }
             }
           }
 
-
-
-
-
-
           for(var i=0;i<data.length-4;i++){
             for(var j=0;j<data.length-4;j++){
                   if(
-
-
                     (data[i][j]==1 && data[i+1][j+1]==1 && data[i+2][j+2]==1 && data[i+3][j+3]==1 && 
                     data[i+4][j+4]==1) 
                     || 
                     (data[i][j]==2 && data[i+1][j+1]==2 && data[i+2][j+2]==2 && 
                     data[i+3][j+3]==2 && data[i+4][j+4]==2) 
-
-
                     ){
-
 
                       drawLine(cxt, y+colum*i, x+colum*j, y+colum*i+colum, x+colum*j+colum, "#f00");
                       drawLine(cxt, y+colum*i+colum, x+colum*j+colum, y+colum*i+colum*2, x+colum*j+colum*2, 
@@ -370,42 +284,15 @@
                            whowin: "White"
                         }
                       }
-
-
-
-
-
-
                   }
             }
           }
-
-
-
-
-
-
-
 
           return {
             statu:false
           }
 
-
-
-
-
-
-
-
-
-
-
-
       }
-
-
-
 
       document.getElementById("reset").onclick = function(e){
           validateReset(cxt);
@@ -595,19 +482,7 @@
 
   })(window)
 
-
- </script>
-
-
-<!-- <script type="text/javascript" src="vue.min.js"></script> -->
-<script>
-  
-
-
-
-
-
-
 </script>
+<!-- <script type="text/javascript" src="vue.min.js"></script> -->
 </body>
 </html>

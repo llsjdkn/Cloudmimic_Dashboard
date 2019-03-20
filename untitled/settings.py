@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'app0.apps.App001Config',
 ]
 
+# 注册中间件
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -55,7 +56,7 @@ ROOT_URLCONF = 'untitled.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [ os.path.join(BASE_DIR, 'templates').replace('\\', '/'),]
+        'DIRS': [os.path.join(BASE_DIR, 'templates').replace('\\', '/'), ]
         ,
         'APP_DIRS': True,
         'OPTIONS': {
@@ -77,11 +78,11 @@ WSGI_APPLICATION = 'untitled.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql', #使用mysql数据库
+        'ENGINE': 'django.db.backends.mysql',  # 使用mysql数据库
         'NAME': 'djangolwy',      # 数据库名称
-        'USER': 'root',      # 用户名
-        'PASSWORD': '123456',# 密码
-        'HOST': 'localhost', # 主机地址
+        'USER': 'root',       # 用户名
+        'PASSWORD': '123456',  # 密码
+        'HOST': 'localhost',  # 主机地址
         'PORT': '3306',      # 端口
     }
 }
@@ -122,7 +123,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
-
+# we can import static file in this way.
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
