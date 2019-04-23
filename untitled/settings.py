@@ -131,3 +131,5 @@ STATICFILES_DIRS = [
 ]
 
 SESSION_SERIALIZER='django.contrib.sessions.serializers.PickleSerializer'
+
+AUTH_USER_MODEL = "app0.Userinfo"
