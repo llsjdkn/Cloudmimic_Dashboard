@@ -1,4 +1,4 @@
-<!--虚拟机部署的页面-->
+<!--智能控制的页面-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -68,10 +68,30 @@
         </p>
         <p>
 
-            类型<br><td>{{ form.os }}</td><br>
-            参数<br><td>{{ form.flavor }}</td><br>
-            部署位置<br><td>{{ form.location }}</td><br>
-            数量<br><td>{{ form.number }}</td><br><br>
+            镜像名称<br><td>{{ form.imagename }}</td><br>
+            镜像服务类型<br><td>{{ form.service_type }}</td><br>
+            App版本<br><td>{{ form.appversion  }}</td><br>
+            操作系统版本<br><td>{{ form.osname  }}</td><br>
+            文件路径<br><td>{{ form.filepath  }}</td><br><br>
+
+            <label for="created">服务类型</label> <br>
+            <select name="created">
+                {% for x in form.service_type_choices %}
+                <option value="{{ x}}">{{ x }}</option>
+                {% endfor %}
+            </select><br><br>
+                    <label for="created">安全等级</label> <br>
+            <select name="created">
+                {% for x in form.servicelevel_type_choices %}
+                <option value="{{ x}}">{{ x }}</option>
+                {% endfor %}
+            </select><br><br>
+                    <label for="created">拟态裁决策略</label> <br>
+            <select name="created">
+                {% for x in form.arbitrule_type_choices %}
+                <option value="{{ x}}">{{ x }}</option>
+                {% endfor %}
+            </select><br><br>
             <input type="submit" value="Submit">
 
 
