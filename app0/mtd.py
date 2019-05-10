@@ -27,11 +27,11 @@ def mtd_list_refresh(request):
             {
             'P_extern': row.p_extern,
             'E1_loca': row.e1_location,
-    'E1': row.e1,
+            'E1': row.e1,
     'HappenTime': row.happentime
     })  # 后续对接数据库修改
 
-    print(data)
+    #print(data)
     json_data = json.dumps(data, cls=ComplexEncoder)    # json格式加双引号
     # print(json_data)
     return JsonResponse(json_data, safe=False)
@@ -51,7 +51,24 @@ def mtd_info_refresh(request, mtdname):
     for row in queryset:
         data.append(
             {'P_extern': row.p_extern, 'E1_loca': row.e1_location, 'E1': row.e1,'HappenTime': row.happentime})
-    print(data)    
+    #print(data)
     json_data = json.dumps(data, cls=ComplexEncoder)
-    print(json_data)
+    #print(json_data)
+    return JsonResponse(json_data, safe=False)
+
+
+def mimic_list_refresh(request):
+    queryset = MtdHistory.objects.all()[0]
+    data = []
+    data.append(
+            {
+            'P_extern': queryset.p_extern,
+            'E1': queryset.e1,
+            'E2': queryset.e2,
+            'E3': queryset.e3,
+    })  # 后续对接数据库修改
+
+    print(data)
+    json_data = json.dumps(data, cls=ComplexEncoder)    # json格式加双引号
+    # print(json_data)
     return JsonResponse(json_data, safe=False)

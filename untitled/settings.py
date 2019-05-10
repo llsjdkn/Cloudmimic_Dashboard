@@ -25,7 +25,7 @@ SECRET_KEY = 'mcoes=$)d97e(26q%s%p27u^ymj#yxs292fdj5lo$4uf6g7ja+'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition

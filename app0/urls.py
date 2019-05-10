@@ -4,19 +4,22 @@ from django.conf.urls.static import static
 from . import views, mtd, mimic, deployment
 
 urlpatterns = [
-    url(r'^gobang$', views.index1, name='index'),     # Îå×ÓÆåÓÎÏ·
-    url(r'^mtdlist$', mtd.mtd_list, name='mtdlist'),  # ÏÔÊ¾mtd_listÊ§°Ü
-    # url(r'^deployment/(\w+)/$', deployment.mtd_info, name='deployment'),  # Æ¥ÅäÈÎÒâ×Ö¶ÎÊı×Ö
-    url(r'^deployment$', deployment.deploy, name='deployment'),  # ĞéÄâ»ú²¿Êğ
-    url(r'^migration$', deployment.migration, name='migration'),  # ĞéÄâ»úÇ¨ÒÆ
-    url(r'^intecontrol$', deployment.intecontrol, name='intecontrol'),  # ÖÇÄÜ¿ØÖÆ¹¦ÄÜ
-    url(r'^developerAPI$', deployment.develop, name='developerAPI'),  # ÖÇÄÜ¿ØÖÆ¹¦ÄÜ
+    url(r'^gobang$', views.index1, name='index'),     # ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï·
+    url(r'^1', deployment.ex, name='index'),     # ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï·
+    url(r'^2', deployment.ex2, name='index'),  # ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    url(r'^mtdlist$', mtd.mtd_list, name='mtdlist'),  #
+    # url(r'^deployment/(\w+)/$', deployment.mtd_info, name='deployment'),  #
+    url(r'^deployment$', deployment.deploy, name='deployment'),  # ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    url(r'^migration$', deployment.migration, name='migration'),  # ï¿½ï¿½ï¿½ï¿½ï¿½Ç¨ï¿½ï¿½
+    url(r'^intecontrol$', deployment.intecontrol, name='intecontrol'),  # ï¿½ï¿½ï¿½Ü¿ï¿½ï¿½
+    url(r'^developerAPI$', deployment.develop, name='developerAPI'),  # ï¿½ï¿½ï¿½Ü¿ï¿½ï¿½Æ¹ï¿½ï¿½ï¿½
     url(r'^mtdlistrefresh$', mtd.mtd_list_refresh, name='mtdlistrefresh'),
-    url(r'^mtd/(\w+)/$', mtd.mtd_info, name='mtd'),   # Æ¥ÅäÈÎÒâ×Ö¶ÎÊı×Ö
+    url(r'^mimiclistrefresh$', mtd.mimic_list_refresh, name='mimiclistrefresh'),
+    url(r'^mtd/(\w+)/$', mtd.mtd_info, name='mtd'),   # Æ¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¶ï¿½ï¿½ï¿½ï¿½ï¿½
     url(r'^mtdrefresh/(\w+)/$', mtd.mtd_info_refresh, name='mtdrefresh'),
-    url(r'^mimiclist$', mimic.mimic_list, name='mimiclist'),
-    url(r'^mimiclistrefresh$', mimic.mimic_list_refresh, name='mimiclistrefresh'),
+    url(r'^mimicdeploy$', deployment.mimic_deploy, name='mimic_deploy$'),
     url(r'^mimic/(\w+)/$', mimic.mimic_info, name='mimic'),
-    url(r'^mimicrefresh/(\w+)/$', mimic.mimic_info_refresh, name='mimicrefresh'),
+    #url(r'^mimicrefresh/(\w+)/$', mimic.mimic_info_refresh, name='mimicrefresh'),
+    url(r'^mimicrefresh$', mimic.mimic_info_refresh, name='mimicrefresh'),
     #  url(r'^favicon.ico',RedirectView.as_view(url=r'/static/favicon.ico')),
 ]+static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

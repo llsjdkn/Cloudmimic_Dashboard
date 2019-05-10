@@ -43,7 +43,7 @@ def mimic_info(request,mimicname):
                   'mimic.html',context)
 
 
-def mimic_info_refresh(request,mimicname):
+def mimic_info_refresh_old(request,mimicname):
     print(mimicname)
     queryset = MimicHistory.objects.filter(p_extern=mimicname).order_by('-happentime').last()
     data = []
@@ -59,3 +59,53 @@ def mimic_info_refresh(request,mimicname):
     print(json_data)
     return JsonResponse(json_data, safe=False)
 
+def mimic_info_refresh(request):
+    queryset1 = MimicHistory.objects.values('p_extern') #后续数据库可以加上代理的名字，因此时代理外部ip不变可用之替代
+    #print(queryset1)
+    list1 = [] #list类型
+    for row in queryset1:
+        m=row['p_extern']
+        list1.append(m)
+    #print(list1)
+    list2 = list(set(list1))
+    #print(list2)
+
+    nodes = [] #list类型，list元素类型为dict
+    edges = []
+    data = []
+    for i in range(len(list2)):
+        #print("list[i]:", list2[i])
+        queryset2 = MimicHistory.objects.filter(p_extern=list2[i]).order_by('-happentime').last()
+        #print('queryset2:', queryset2)
+        #print('queryset2.p_extern:', queryset2.p_extern)
+        n = len(nodes)
+        nodes.append({
+            'name': queryset2.p_extern,
+            'image': 'http://192.168.170.198/2.png'})
+        nodes.append({
+            'name':  queryset2.e1,
+            'image': 'http://192.168.170.198/VM.png'})
+        nodes.append({
+            'name':  queryset2.e2,
+            'image': 'http://192.168.170.198/VM.png'})
+        nodes.append({
+            'name':  queryset2.e3,
+            'image': 'http://192.168.170.198/VM.png'})
+        edges.append({
+            'source': n,
+            'target': n+1,
+            'relation': n})
+        edges.append({
+            'source': n,
+            'target': n+2,
+            'relation': n})
+        edges.append({
+            'source': n,
+            'target': n+3,
+            'relation': n})
+    data.append({
+        'nodes': nodes,
+        'edges': edges})
+    json_data = json.dumps(data)
+    print(json_data)
+    return JsonResponse(json_data, safe=False)
